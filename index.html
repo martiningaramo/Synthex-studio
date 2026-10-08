@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthex Studio | Impresión 3D & Diseño Industrial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#FAF8F5',
+                            100: '#F4EFE6',
+                            200: '#E6DCCB',
+                            300: '#D5C4A8',
+                            400: '#BCA380',
+                            500: '#8C6E43', // Color primario extraído de la marca oficial
+                            600: '#735732',
+                            700: '#5A4225',
+                            800: '#422E1A',
+                            900: '#2A1B0E',
+                        },
+                        darkbg: {
+                            DEFAULT: '#121315',
+                            card: '#1B1C1F',
+                            border: '#2D2F34'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .logo-stroke { stroke: #8C6E43; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+        .dark .logo-stroke { stroke: #C5A069; }
+        .product-card { transition: all 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-[#FAF8F5] text-stone-800 dark:bg-darkbg dark:text-stone-200 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <nav class="sticky top-0 z-50 bg-[#FAF8F5]/90 dark:bg-darkbg/90 backdrop-blur-md border-b border-stone-200/80 dark:border-darkbg-border transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- LOGO OFICIAL SYNTHEX STUDIO -->
+            <a href="#" class="flex items-center space-x-3.5 group">
+                <div class="w-10 h-10 flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg viewBox="390 170 310 300" class="w-full h-full text-brand-500 dark:text-brand-400" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M448 190Q500 208 548 180"></path>
+                        <path d="M548 180Q552 230 600 258"></path>
+                        <path d="M622 188Q628 245 680 272"></path>
+                        <path d="M680 272Q625 290 585 342"></path>
+                        <path d="M684 356Q640 358 600 436"></path>
+                        <path d="M600 436Q565 388 522 362"></path>
+                        <path d="M542 460Q495 420 446 396"></path>
+                        <path d="M446 396Q482 345 474 296"></path>
+                        <path d="M402 360Q408 290 432 255"></path>
+                        <path d="M432 255Q485 262 528 255"></path>
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-extrabold tracking-[0.18em] text-brand-800 dark:text-stone-100 uppercase leading-none">SYNTHEX</span>
+                    <span class="text-[10px] tracking-[0.35em] text-brand-500 font-semibold uppercase mt-1 leading-none">STUDIO</span>
+                </div>
+            </a>
+
+            <!-- Navegación central (Escritorio) -->
+            <div class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                <a href="#catalogo" class="hover:text-brand-500 transition">Catálogo</a>
+                <a href="#presupuesto" class="hover:text-brand-500 transition">Cotizar STL</a>
+                <a href="#nosotros" class="hover:text-brand-500 transition">Nosotros</a>
+                <a href="#contacto" class="hover:text-brand-500 transition">Contacto</a>
+            </div>
+
+            <!-- Acciones e Interruptor Dark/Light + Botón Hamburguesa -->
+            <div class="flex items-center space-x-3">
+                <button id="themeToggle" onclick="toggleTheme()" title="Cambiar tema" class="w-10 h-10 rounded-full border border-stone-300/80 dark:border-darkbg-border flex items-center justify-center text-stone-600 dark:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800 transition">
+                    <i id="themeIcon" class="fas fa-moon text-base"></i>
+                </button>
+
+                <a href="#presupuesto" class="hidden sm:inline-block bg-brand-500 hover:bg-brand-600 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition shadow-sm hover:shadow">
+                    Solicitar Cotización
+                </a>
+
+                <!-- Botón Menú Hamburguesa Móvil -->
+                <button id="mobileMenuBtn" onclick="toggleMobileMenu()" title="Menú de navegación" class="md:hidden w-10 h-10 rounded-lg border border-stone-300/80 dark:border-darkbg-border flex items-center justify-center text-stone-600 dark:text-stone-300 hover:bg-stone-200/50 dark:hover:bg-stone-800 transition">
+                    <i id="mobileMenuIcon" class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Desplegable Menú Móvil -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-stone-200/80 dark:border-darkbg-border bg-[#FAF8F5] dark:bg-darkbg px-4 pt-4 pb-6 space-y-3">
+            <a href="#catalogo" onclick="closeMobileMenu()" class="block py-2 text-base font-semibold hover:text-brand-500 transition">Catálogo</a>
+            <a href="#presupuesto" onclick="closeMobileMenu()" class="block py-2 text-base font-semibold hover:text-brand-500 transition">Cotizar STL</a>
+            <a href="#nosotros" onclick="closeMobileMenu()" class="block py-2 text-base font-semibold hover:text-brand-500 transition">Nosotros</a>
+            <a href="#contacto" onclick="closeMobileMenu()" class="block py-2 text-base font-semibold hover:text-brand-500 transition">Contacto</a>
+            <div class="pt-2">
+                <a href="#presupuesto" onclick="closeMobileMenu()" class="block text-center w-full bg-brand-500 hover:bg-brand-600 text-white px-5 py-3 rounded-lg text-sm font-semibold transition shadow-sm">
+                    Solicitar Cotización
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        <span class="text-brand-500 font-bold tracking-widest text-xs uppercase bg-brand-100 dark:bg-stone-800/80 px-4 py-1.5 rounded-full border border-brand-200 dark:border-stone-700">
+            Diseño & Fabricación Aditiva
+        </span>
+        <h1 class="text-4xl sm:text-6xl font-black tracking-tight mt-6 text-stone-900 dark:text-white leading-tight">
+            Transformamos ideas digitales <br class="hidden sm:inline"/>en <span class="text-brand-500">objetos tangibles</span>
+        </h1>
+        <p class="mt-6 text-base sm:text-lg text-stone-600 dark:text-stone-400 max-w-2xl mx-auto font-normal leading-relaxed">
+            Especialistas en prototipado industrial, piezas funcionales de alta resistencia y objetos decorativos con impresión 3D de máxima resolución.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+            <a href="#catalogo" class="bg-brand-500 hover:bg-brand-600 text-white px-7 py-3.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition">Explorar Catálogo</a>
+            <a href="#presupuesto" class="bg-white dark:bg-darkbg-card border border-stone-300 dark:border-darkbg-border text-stone-800 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-800 px-7 py-3.5 rounded-lg font-semibold transition">Cotizar Archivo 3D</a>
+        </div>
+    </header>
+
+    <section id="catalogo" class="py-16 bg-white dark:bg-darkbg-card border-y border-stone-200/80 dark:border-darkbg-border transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold tracking-tight">Catálogo de Productos</h2>
+                <p class="text-stone-500 dark:text-stone-400 mt-2 text-sm sm:text-base">Selección de diseños disponibles para producción a demanda</p>
+
+                <!-- Botones de Filtros con badges numéricos de feedback -->
+                <div class="flex flex-wrap justify-center gap-2 mt-8">
+                    <button onclick="filterCategory('all', this)" class="cat-btn px-5 py-2 rounded-full text-sm font-semibold bg-brand-500 text-white shadow-sm flex items-center gap-2">
+                        <span>Todos</span>
+                        <span class="text-xs bg-white/20 px-2 py-0.5 rounded-full">6</span>
+                    </button>
+                    <button onclick="filterCategory('decoracion', this)" class="cat-btn px-5 py-2 rounded-full text-sm font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition flex items-center gap-2">
+                        <span>Decoración</span>
+                        <span class="text-xs bg-stone-200 dark:bg-stone-700 px-2 py-0.5 rounded-full">2</span>
+                    </button>
+                    <button onclick="filterCategory('organizacion', this)" class="cat-btn px-5 py-2 rounded-full text-sm font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition flex items-center gap-2">
+                        <span>Organización</span>
+                        <span class="text-xs bg-stone-200 dark:bg-stone-700 px-2 py-0.5 rounded-full">2</span>
+                    </button>
+                    <button onclick="filterCategory('funcional', this)" class="cat-btn px-5 py-2 rounded-full text-sm font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition flex items-center gap-2">
+                        <span>Piezas Funcionales</span>
+                        <span class="text-xs bg-stone-200 dark:bg-stone-700 px-2 py-0.5 rounded-full">2</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grilla de Tarjetas de Productos -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Producto 1 -->
+                <div class="product-card decoracion bg-[#FAF8F5] dark:bg-darkbg border border-stone-200/80 dark:border-darkbg-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="h-56 overflow-hidden relative group cursor-pointer" onclick="openModal(0)">
+                        <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80" alt="Maceta Geométrica Facetada" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1 rounded-full"><i class="fas fa-images mr-1"></i> 3 imágenes</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-xs font-bold text-brand-500 uppercase tracking-wider">Decoración</span>
+                        <h3 class="text-lg font-bold mt-1 text-stone-900 dark:text-white">Maceta Geométrica Facetada</h3>
+                        <p class="text-stone-600 dark:text-stone-400 text-sm mt-2 flex-grow">Diseño minimalista escandinavo ideal para suculentas y plantas pequeñas. Impreso en PLA biodegradable Premium.</p>
+                        <div class="mt-6 pt-4 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+                            <span class="text-xs font-medium text-stone-500">Desde $12.000</span>
+                            <button onclick="openModal(0)" class="text-brand-500 font-bold text-sm hover:underline">Ver detalles &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 2 -->
+                <div class="product-card organizacion bg-[#FAF8F5] dark:bg-darkbg border border-stone-200/80 dark:border-darkbg-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="h-56 overflow-hidden relative group cursor-pointer" onclick="openModal(1)">
+                        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80" alt="Soporte Escultural de Audífonos" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1 rounded-full"><i class="fas fa-images mr-1"></i> 3 imágenes</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-xs font-bold text-brand-500 uppercase tracking-wider">Organización</span>
+                        <h3 class="text-lg font-bold mt-1 text-stone-900 dark:text-white">Soporte Escultural de Audífonos</h3>
+                        <p class="text-stone-600 dark:text-stone-400 text-sm mt-2 flex-grow">Soporte ergonómico de escritorio con base ponderada e interior preparado para pasacables integrado.</p>
+                        <div class="mt-6 pt-4 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+                            <span class="text-xs font-medium text-stone-500">Desde $18.500</span>
+                            <button onclick="openModal(1)" class="text-brand-500 font-bold text-sm hover:underline">Ver detalles &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 3 -->
+                <div class="product-card funcional bg-[#FAF8F5] dark:bg-darkbg border border-stone-200/80 dark:border-darkbg-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="h-56 overflow-hidden relative group cursor-pointer" onclick="openModal(2)">
+                        <img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80" alt="Elevador Portátil para Laptop" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1 rounded-full"><i class="fas fa-images mr-1"></i> 3 imágenes</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-xs font-bold text-brand-500 uppercase tracking-wider">Piezas Funcionales</span>
+                        <h3 class="text-lg font-bold mt-1 text-stone-900 dark:text-white">Elevador Portátil para Laptop</h3>
+                        <p class="text-stone-600 dark:text-stone-400 text-sm mt-2 flex-grow">Soporte articulado ultra resistente y ultraliviano. Diseñado para favorecer la refrigeración del equipo.</p>
+                        <div class="mt-6 pt-4 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+                            <span class="text-xs font-medium text-stone-500">Desde $15.000</span>
+                            <button onclick="openModal(2)" class="text-brand-500 font-bold text-sm hover:underline">Ver detalles &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 4 -->
+                <div class="product-card decoracion bg-[#FAF8F5] dark:bg-darkbg border border-stone-200/80 dark:border-darkbg-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="h-56 overflow-hidden relative group cursor-pointer" onclick="openModal(3)">
+                        <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80" alt="Lámpara Litofanía Personalizada" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1 rounded-full"><i class="fas fa-images mr-1"></i> 3 imágenes</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-xs font-bold text-brand-500 uppercase tracking-wider">Decoración</span>
+                        <h3 class="text-lg font-bold mt-1 text-stone-900 dark:text-white">Lámpara Litofanía Personalizada</h3>
+                        <p class="text-stone-600 dark:text-stone-400 text-sm mt-2 flex-grow">Lámpara impresa a partir de fotos o ilustraciones enviadas por el cliente. Efecto de relieve fotográfico al encender la luz.</p>
+                        <div class="mt-6 pt-4 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+                            <span class="text-xs font-medium text-stone-500">Desde $24.000</span>
+                            <button onclick="openModal(3)" class="text-brand-500 font-bold text-sm hover:underline">Ver detalles &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 5 -->
+                <div class="product-card organizacion bg-[#FAF8F5] dark:bg-darkbg border border-stone-200/80 dark:border-darkbg-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="h-56 overflow-hidden relative group cursor-pointer" onclick="openModal(4)">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Organizador Modular Desk-Grid" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1 rounded-full"><i class="fas fa-images mr-1"></i> 3 imágenes</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-xs font-bold text-brand-500 uppercase tracking-wider">Organización</span>
+                        <h3 class="text-lg font-bold mt-1 text-stone-900 dark:text-white">Organizador Modular Desk-Grid</h3>
+                        <p class="text-stone-600 dark:text-stone-400 text-sm mt-2 flex-grow">Sistema de bandejas apilables e interconectables para cables, tarjetas, memorias SD y útiles de escritorio.</p>
+                        <div class="mt-6 pt-4 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+                            <span class="text-xs font-medium text-stone-500">Desde $14.500</span>
+                            <button onclick="openModal(4)" class="text-brand-500 font-bold text-sm hover:underline">Ver detalles &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 6 -->
+                <div class="product-card funcional bg-[#FAF8F5] dark:bg-darkbg border border-stone-200/80 dark:border-darkbg-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="h-56 overflow-hidden relative group cursor-pointer" onclick="openModal(5)">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80" alt="Repuestos & Mecanismos 3D" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1 rounded-full"><i class="fas fa-images mr-1"></i> 2 imágenes</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <span class="text-xs font-bold text-brand-500 uppercase tracking-wider">Piezas Funcionales</span>
+                        <h3 class="text-lg font-bold mt-1 text-stone-900 dark:text-white">Repuestos & Mecanismos 3D</h3>
+                        <p class="text-stone-600 dark:text-stone-400 text-sm mt-2 flex-grow">Engranajes, adaptadores y soportes para electrodomésticos o automotor fabricados con tolerancias de precisión.</p>
+                        <div class="mt-6 pt-4 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
+                            <span class="text-xs font-medium text-stone-500">Cotización a medida</span>
+                            <button onclick="openModal(5)" class="text-brand-500 font-bold text-sm hover:underline">Ver detalles &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="presupuesto" class="py-20 max-w-4xl mx-auto px-4 sm:px-6 w-full">
+        <div class="bg-white dark:bg-darkbg-card border border-stone-200/80 dark:border-darkbg-border rounded-2xl p-8 sm:p-10 shadow-sm transition-colors">
+            <div class="text-center max-w-xl mx-auto">
+                <span class="text-brand-500 text-xs uppercase font-bold tracking-widest">Servicio de Impresión 3D Custom</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">Cotizá tu archivo STL / OBJ</h2>
+                <p class="text-stone-500 dark:text-stone-400 text-sm mt-2">¿Tenés tu propio modelo 3D o querés reproducir una pieza personalizada? Completá el formulario para recibir tu presupuesto.</p>
+            </div>
+
+            <form onsubmit="handleFormSubmit(event)" class="mt-8 space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-2">Nombre completo</label>
+                        <input type="text" required placeholder="Tu nombre" class="w-full px-4 py-3 bg-stone-50 dark:bg-darkbg border border-stone-300 dark:border-darkbg-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-2">Email / WhatsApp</label>
+                        <input type="text" required placeholder="ejemplo@email.com o teléfono" class="w-full px-4 py-3 bg-stone-50 dark:bg-darkbg border border-stone-300 dark:border-darkbg-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-2">Material preferido</label>
+                        <select class="w-full px-4 py-3 bg-stone-50 dark:bg-darkbg border border-stone-300 dark:border-darkbg-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+                            <option>PLA Premium (Ecológico y detallado)</option>
+                            <option>PETG (Resistencia térmica e impacto)</option>
+                            <option>Resina UV (Máxima definición / Figuras)</option>
+                            <option>TPU / Flexible (Piezas elásticas)</option>
+                            <option>Asesorarme según el uso</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-2">Color deseado</label>
+                        <input type="text" placeholder="Ej: Marrón bronce, Negro mate, Blanco..." class="w-full px-4 py-3 bg-stone-50 dark:bg-darkbg border border-stone-300 dark:border-darkbg-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-2">Detalles, dimensiones o enlace al modelo 3D</label>
+                    <textarea rows="4" placeholder="Ingresá detalles de la pieza, uso previsto, dimensiones requeridas o enlace de descarga (Drive, Thingiverse, Printables)..." class="w-full px-4 py-3 bg-stone-50 dark:bg-darkbg border border-stone-300 dark:border-darkbg-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 rounded-xl transition shadow-md hover:shadow-lg text-sm uppercase tracking-wider">
+                    Enviar para Presupuesto
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer id="contacto" class="mt-auto bg-stone-900 text-stone-400 py-12 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <!-- Brand logo footer -->
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-8 h-8">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <path class="logo-stroke" d="M50 16 L65 25 L52 35" />
+                            <path class="logo-stroke" d="M79 33 L80 51 L64 45" />
+                            <path class="logo-stroke" d="M79 67 L65 76 L59 58" />
+                            <path class="logo-stroke" d="M50 84 L35 75 L48 65" />
+                            <path class="logo-stroke" d="M21 67 L20 49 L36 55" />
+                            <path class="logo-stroke" d="M21 33 L35 24 L41 42" />
+                        </svg>
+                    </div>
+                    <span class="text-lg font-extrabold text-white tracking-wider">SYNTHEX STUDIO</span>
+                </div>
+                <p class="text-sm leading-relaxed text-stone-400">Taller de diseño industrial y estudio de manufactura aditiva especializado en impresión 3D a medida.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-3">Atención Directa</h4>
+                <p class="text-sm flex items-center gap-2"><i class="fab fa-whatsapp text-green-500"></i> WhatsApp: +54 9 11 0000-0000</p>
+                <p class="text-sm flex items-center gap-2 mt-2"><i class="far fa-envelope text-brand-400"></i> contacto@synthexstudio.com</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-3">Envíos & Entrega</h4>
+                <p class="text-sm text-stone-400">Realizamos envíos a todo el país o retiro por nuestro estudio de producción.</p>
+                <p class="text-xs text-stone-500 mt-6">&copy; Synthex Studio. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE PRODUCTO CON GALERÍA DE IMÁGENES -->
+    <div id="productModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white dark:bg-darkbg-card max-w-xl w-full rounded-2xl p-6 sm:p-8 shadow-2xl relative border border-stone-200 dark:border-darkbg-border max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-stone-400 hover:text-stone-600 dark:hover:text-white transition z-10">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <span id="modalCategory" class="text-xs font-bold uppercase tracking-wider text-brand-500">Categoría</span>
+            <h3 id="modalTitle" class="text-2xl font-extrabold mt-1 mb-4 text-stone-900 dark:text-white"></h3>
+            
+            <!-- Carrusel / Visor de Galería -->
+            <div class="space-y-3">
+                <div class="relative h-64 sm:h-72 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800">
+                    <img id="modalMainImg" src="" alt="Producto" class="w-full h-full object-cover transition-all duration-300">
+                    
+                    <!-- Botones de navegación en imagen -->
+                    <button onclick="prevImage()" class="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition">
+                        <i class="fas fa-chevron-left text-sm"></i>
+                    </button>
+                    <button onclick="nextImage()" class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition">
+                        <i class="fas fa-chevron-right text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Miniaturas de la Galería -->
+                <div id="modalThumbnails" class="flex gap-2 justify-center"></div>
+            </div>
+
+            <div class="space-y-3 border-y border-stone-200/80 dark:border-stone-800 py-4 my-4 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-stone-500">Material sugerido:</span>
+                    <span id="modalMaterial" class="font-semibold text-stone-800 dark:text-stone-200"></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-stone-500">Dimensiones aprox:</span>
+                    <span id="modalDimensions" class="font-semibold text-stone-800 dark:text-stone-200"></span>
+                </div>
+            </div>
+
+            <p class="text-xs text-stone-500 dark:text-stone-400 mb-6">Todos nuestros productos se fabrican bajo demanda. Podés elegir colores personalizados o solicitar modificaciones.</p>
+
+            <div class="flex gap-3">
+                <a href="#contacto" onclick="closeModal()" class="flex-1 bg-brand-500 text-white text-center py-3 rounded-xl text-sm font-bold hover:bg-brand-600 transition uppercase tracking-wider">Consultar Pedido</a>
+                <button onclick="closeModal()" class="px-5 border border-stone-300 dark:border-stone-700 rounded-xl text-sm font-semibold hover:bg-stone-100 dark:hover:bg-stone-800 transition">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de productos con galerías de imágenes
+        const productsData = [
+            {
+                title: 'Maceta Geométrica Facetada',
+                category: 'Decoración',
+                material: 'PLA Ecológico Biodegradable',
+                dimensions: '12cm x 12cm x 10cm',
+                images: [
+                    'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&w=800&q=80'
+                ]
+            },
+            {
+                title: 'Soporte Escultural de Audífonos',
+                category: 'Organización',
+                material: 'PETG de Alta Densidad',
+                dimensions: '25cm x 14cm x 12cm',
+                images: [
+                    'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&q=80'
+                ]
+            },
+            {
+                title: 'Elevador Portátil para Laptop',
+                category: 'Piezas Funcionales',
+                material: 'PETG reforzado con fibra de carbono',
+                dimensions: 'Plegable / Ajustable',
+                images: [
+                    'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80'
+                ]
+            },
+            {
+                title: 'Lámpara Litofanía Personalizada',
+                category: 'Decoración / Regalo',
+                material: 'PLA Blanco Ultra-fino',
+                dimensions: '15cm x 10cm',
+                images: [
+                    'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=800&q=80'
+                ]
+            },
+            {
+                title: 'Organizador Modular Desk-Grid',
+                category: 'Organización',
+                material: 'PLA Mate Premium',
+                dimensions: 'Modular a medida',
+                images: [
+                    'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=800&q=80'
+                ]
+            },
+            {
+                title: 'Repuestos & Mecanismos 3D',
+                category: 'Piezas Funcionales',
+                material: 'Nylon / PETG / TPU',
+                dimensions: 'Según plano o muestra',
+                images: [
+                    'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
+                ]
+            }
+        ];
+
+        let currentProductIndex = 0;
+        let currentImageIndex = 0;
+
+        // Abrir Modal de Producto
+        function openModal(index) {
+            currentProductIndex = index;
+            currentImageIndex = 0;
+            const product = productsData[index];
+
+            document.getElementById('modalTitle').innerText = product.title;
+            document.getElementById('modalCategory').innerText = product.category;
+            document.getElementById('modalMaterial').innerText = product.material;
+            document.getElementById('modalDimensions').innerText = product.dimensions;
+
+            updateModalGallery();
+
+            const modal = document.getElementById('productModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Actualizar Galería del Modal
+        function updateModalGallery() {
+            const product = productsData[currentProductIndex];
+            document.getElementById('modalMainImg').src = product.images[currentImageIndex];
+
+            // Renderizar miniaturas
+            const thumbContainer = document.getElementById('modalThumbnails');
+            thumbContainer.innerHTML = '';
+            product.images.forEach((imgUrl, i) => {
+                const thumb = document.createElement('img');
+                thumb.src = imgUrl;
+                thumb.className = `w-14 h-14 object-cover rounded-lg cursor-pointer border-2 transition ${i === currentImageIndex ? 'border-brand-500 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`;
+                thumb.onclick = () => {
+                    currentImageIndex = i;
+                    updateModalGallery();
+                };
+                thumbContainer.appendChild(thumb);
+            });
+        }
+
+        function nextImage() {
+            const images = productsData[currentProductIndex].images;
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateModalGallery();
+        }
+
+        function prevImage() {
+            const images = productsData[currentProductIndex].images;
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateModalGallery();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('productModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Menú Móvil
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                icon.className = 'fas fa-times text-lg';
+            } else {
+                mobileMenu.classList.add('hidden');
+                icon.className = 'fas fa-bars text-lg';
+            }
+        }
+
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            if (mobileMenu) {
+                mobileMenu.classList.add('hidden');
+                if (icon) icon.className = 'fas fa-bars text-lg';
+            }
+        }
+
+        // Modo Oscuro
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.getElementById('themeIcon').className = 'fas fa-sun';
+        }
+
+        // Filtro Categorías
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.className = 'cat-btn px-5 py-2 rounded-full text-sm font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition flex items-center gap-2';
+                const badge = b.querySelector('span:last-child');
+                if (badge) badge.className = 'text-xs bg-stone-200 dark:bg-stone-700 px-2 py-0.5 rounded-full';
+            });
+
+            btn.className = 'cat-btn px-5 py-2 rounded-full text-sm font-semibold bg-brand-500 text-white shadow-sm flex items-center gap-2';
+            const activeBadge = btn.querySelector('span:last-child');
+            if (activeBadge) activeBadge.className = 'text-xs bg-white/20 px-2 py-0.5 rounded-full';
+
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.classList.contains(cat)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            alert('¡Gracias por tu consulta! Hemos recibido la información y te contactaremos a la brevedad con tu cotización.');
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
